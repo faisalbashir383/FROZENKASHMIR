@@ -1,0 +1,212 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Slider -->
+<div class="swiper hero-slider">
+    <div class="swiper-wrapper">
+        {% for destination in destinations %}
+        <!-- Dynamic slides based on destinations -->
+        <div class="swiper-slide"
+            style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('{% if destination.slug == 'srinagar' %}https://images.unsplash.com/photo-1564329494258-3f72215ba175?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D{% elif destination.slug == 'gulmarg' %}https://images.unsplash.com/photo-1676441019594-07142b925bc2?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D{% elif destination.slug == 'pahalgam' %}https://images.unsplash.com/photo-1701957494338-95527b753a7f?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D{% elif destination.slug == 'sonamarg' %}https://images.unsplash.com/photo-1643449415972-87d4cfe882a1?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D{% else %}https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2000&auto=format&fit=crop{% endif %}');">
+            <div class="hero-content">
+                <h1>{{ destination.name }}</h1>
+                <p>{{ destination.description|truncatewords:20 }}</p>
+                <a href="{% url 'destination_detail' destination.slug %}" class="btn">Explore {{ destination.name }}</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+<!-- Search Section -->
+<div class="search-container">
+    <form action="{% url 'search' %}" method="GET" class="search-box">
+        <input type="text" name="destination" placeholder="Where do you want to go? (e.g., Gulmarg)">
+        <input type="date" name="date">
+        <select name="travelers">
+            <option value="">Travelers</option>
+            <option value="1">1 Traveler</option>
+            <option value="2">2 Travelers</option>
+            <option value="3+">3+ Travelers</option>
+        </select>
+        <button type="submit" class="btn" style="flex: 0 0 150px;">Search</button>
+    </form>
+</div>
+
+<!-- Experience Kashmir Section -->
+<section class="section" style="padding-bottom: 2rem;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+        <div>
+            <h2 style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 1.5rem;">Experience the <br><span
+                    style="color: var(--accent-color);">Real Kashmir</span></h2>
+            <p style="margin-bottom: 1.5rem; font-size: 1.1rem; color: #555;">
+                Kashmir is not just a place; it's a feeling. From the warm hospitality of the locals to the aromatic
+                flavor of <strong>Kahwa</strong>, every moment here is a memory waiting to be made.
+            </p>
+            <p style="margin-bottom: 2rem; color: #555;">
+                Whether you want to stay in a heritage <strong>Houseboat</strong> carved from cedar wood, trek to the
+                glacial lakes, or simply watch the sunset over the Zabarwan range, we curate experiences that touch your
+                soul.
+            </p>
+            <div style="display: flex; gap: 2rem;">
+                <div>
+                    <h4 style="font-size: 2rem; color: var(--primary-color);">10+</h4>
+                    <p>Years Experience</p>
+                </div>
+                <div>
+                    <h4 style="font-size: 2rem; color: var(--primary-color);">5k+</h4>
+                    <p>Happy Travelers</p>
+                </div>
+                <div>
+                    <h4 style="font-size: 2rem; color: var(--primary-color);">24/7</h4>
+                    <p>Local Support</p>
+                </div>
+            </div>
+        </div>
+        <div style="position: relative;">
+            <img src="https://images.unsplash.com/photo-1598091383021-15ddea10925d?q=80&w=1000&auto=format&fit=crop"
+                alt="Kashmir Culture" style="width: 100%; border-radius: 20px; box-shadow: var(--shadow-lg);">
+            <div
+                style="position: absolute; bottom: -20px; right: -20px; background: white; padding: 1.5rem; border-radius: 10px; box-shadow: var(--shadow-md);">
+                <p style="font-weight: 600; color: var(--primary-color);">"Gar firdaus bar-rue zamin ast,<br>hami asto,
+                    hami asto, hami ast."</p>
+                <small style="color: #888;">- Amir Khusro</small>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Packages -->
+<section class="section" id="packages" style="background-color: #f8f9fa;">
+    <h2 class="section-title">Handpicked Collections</h2>
+    <div class="grid">
+        {% for package in featured_packages %}
+        <div class="card">
+            <div class="card-img-wrapper">
+                <span class="card-badge">{{ package.get_category_display }}</span>
+                {% if package.image %}
+                <img src="{{ package.image.url }}" alt="{{ package.title }}" class="card-img">
+                {% else %}
+                <div class="card-img"
+                    style="background-color: #ddd; display: flex; align-items: center; justify-content: center;">No
+                    Image</div>
+                {% endif %}
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">{{ package.title }}</h3>
+                <div class="card-meta">
+                    <span>⏱ {{ package.duration }}</span>
+                    <span>📍 {{ package.destination.name }}</span>
+                </div>
+                <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">{{ package.overview|truncatewords:15 }}
+                </p>
+                <div class="price-row">
+                    <div class="price">
+                        ₹{{ package.price }}
+                        <small>/ person</small>
+                    </div>
+                    <a href="{% url 'package_detail' package.slug %}" class="btn-outline"
+                        style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No featured packages available.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section">
+    <h2 class="section-title">Traveler Stories</h2>
+    <div class="swiper testimonial-slider" style="padding-bottom: 3rem;">
+        <div class="swiper-wrapper">
+            {% for testimonial in testimonials %}
+            <div class="swiper-slide">
+                <div
+                    style="background: white; padding: 2rem; border-radius: 10px; box-shadow: var(--shadow-sm); text-align: center;">
+                    <img src="{{ testimonial.avatar_url }}" alt="{{ testimonial.name }}"
+                        style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 1rem;">
+                    <p style="font-style: italic; color: #555; margin-bottom: 1rem;">"{{ testimonial.testimonial }}"</p>
+                    <h4 style="color: var(--primary-color);">{{ testimonial.name }}</h4>
+                    <small>{{ testimonial.location }}</small>
+                </div>
+            </div>
+            {% empty %}
+            <div class="swiper-slide">
+                <div
+                    style="background: white; padding: 2rem; border-radius: 10px; box-shadow: var(--shadow-sm); text-align: center;">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User"
+                        style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 1rem;">
+                    <p style="font-style: italic; color: #555; margin-bottom: 1rem;">"The houseboat stay was magical.
+                        Frozen Kashmir team arranged everything perfectly. The Shikara ride at sunset is a must!"</p>
+                    <h4 style="color: var(--primary-color);">Sarah Jenkins</h4>
+                    <small>London, UK</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="section"
+    style="background-color: var(--primary-color); color: white; text-align: center; border-radius: 20px; margin: 2rem 5%;">
+    <h2 style="margin-bottom: 1rem;">Subscribe to our Newsletter</h2>
+    <p style="margin-bottom: 2rem; opacity: 0.9;">Get the latest travel tips, hidden gems, and exclusive offers
+        delivered to your inbox.</p>
+    <form style="max-width: 500px; margin: 0 auto; display: flex; gap: 1rem;">
+        <input type="email" placeholder="Your Email Address"
+            style="flex: 1; padding: 1rem; border-radius: 50px; border: none; outline: none;">
+        <button class="btn" style="background-color: var(--accent-color); color: black;">Subscribe</button>
+    </form>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const heroSwiper = new Swiper('.hero-slider', {
+        loop: true,
+        effect: 'fade',
+        speed: 1000,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+
+    const testimonialSwiper = new Swiper('.testimonial-slider', {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        loop: true,
+        autoplay: {
+            delay: 4000,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            768: {
+                slidesPerView: 2,
+            },
+            1024: {
+                slidesPerView: 3,
+            },
+        },
+    });
+</script>
+{% endblock %}

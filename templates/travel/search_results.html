@@ -1,0 +1,70 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block title %}Search Results - Frozen Kashmir{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 6rem; min-height: 70vh;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+        <h1 style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 1rem;">Search Results</h1>
+
+        {% if query %}
+        <p style="color: #666; margin-bottom: 2rem;">
+            Showing results for: <strong>"{{ query }}"</strong>
+            {% if date %} | Travel Date: <strong>{{ date }}</strong>{% endif %}
+            {% if travelers %} | Travelers: <strong>{{ travelers }}</strong>{% endif %}
+        </p>
+        {% else %}
+        <p style="color: #666; margin-bottom: 2rem;">Showing all packages</p>
+        {% endif %}
+
+        {% if packages %}
+        <div class="grid">
+            {% for package in packages %}
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <span class="card-badge">{{ package.get_category_display }}</span>
+                    {% if package.image %}
+                    <img src="{{ package.image.url }}" alt="{{ package.title }}" class="card-img">
+                    {% else %}
+                    <div class="card-img"
+                        style="background-color: #ddd; display: flex; align-items: center; justify-content: center;">No
+                        Image</div>
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">{{ package.title }}</h3>
+                    <div class="card-meta">
+                        <span>⏱ {{ package.duration }}</span>
+                        <span>📍 {{ package.destination.name }}</span>
+                    </div>
+                    <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">{{
+                        package.overview|truncatewords:15 }}
+                    </p>
+                    <div class="price-row">
+                        <div class="price">
+                            ₹{{ package.price }}
+                            <small>/ person</small>
+                        </div>
+                        <a href="{% url 'package_detail' package.slug %}" class="btn-outline"
+                            style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 4rem 0;">
+            <h2 style="color: #888; margin-bottom: 1rem;">No packages found</h2>
+            <p style="color: #999; margin-bottom: 2rem;">Try searching with different keywords or browse all our
+                packages.</p>
+            <a href="{% url 'package_list' %}" class="btn">View All Packages</a>
+        </div>
+        {% endif %}
+
+        <div style="margin-top: 3rem; text-align: center;">
+            <a href="{% url 'home' %}" class="btn-outline">← Back to Home</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

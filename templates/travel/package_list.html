@@ -1,0 +1,224 @@
+{% extends 'travel/base.html' %}
+
+{% block content %}
+<section class="section">
+    <!-- Recommendations Section -->
+    {% if recommendations %}
+    <div class="recommendations-section">
+        <div class="recommendations-header">
+            <span style="font-size: 2rem;">✨</span>
+            <h3>Recommended for You</h3>
+        </div>
+        <div class="grid">
+            {% for package in recommendations %}
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <span class="card-badge">Recommended</span>
+                    {% if package.image %}
+                    <img src="{{ package.image.url }}" alt="{{ package.title }}" class="card-img">
+                    {% else %}
+                    <div class="card-img"
+                        style="background-color: #ddd; display: flex; align-items: center; justify-content: center;">No
+                        Image</div>
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">{{ package.title }}</h3>
+                    <div class="card-meta">
+                        <span>⏱ {{ package.duration }}</span>
+                        <span>📍 {{ package.destination.name }}</span>
+                    </div>
+                    <div class="price-row">
+                        <div class="price">
+                            ₹{{ package.price }}
+                            <small>/ person</small>
+                        </div>
+                        <a href="{% url 'package_detail' package.slug %}" class="btn-outline"
+                            style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <h2 class="section-title">All Packages</h2>
+
+    <!-- Mobile Filter Toggle -->
+    <button class="mobile-filter-toggle" onclick="toggleFilters()">
+        <span>⚙️</span> Filters & Sort
+    </button>
+
+    <div class="filter-container">
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar" id="filterSidebar">
+            <button class="close-filters d-lg-none" onclick="toggleFilters()">×</button>
+
+            <form method="GET" action="{% url 'package_list' %}" id="filterForm">
+                <!-- Preserve existing params -->
+                {% if request.GET.sort %}<input type="hidden" name="sort" value="{{ request.GET.sort }}">{% endif %}
+
+                <div class="filter-group">
+                    <div class="filter-title">Price Range</div>
+                    <div class="price-inputs">
+                        <div class="price-input-group">
+                            <span>₹</span>
+                            <input type="number" name="min_price" placeholder="Min" value="{{ request.GET.min_price }}">
+                        </div>
+                        <div class="price-input-group">
+                            <span>₹</span>
+                            <input type="number" name="max_price" placeholder="Max" value="{{ request.GET.max_price }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title">Category</div>
+                    <div class="filter-options">
+                        {% for code, name in categories %}
+                        <label class="checkbox-label">
+                            <input type="radio" name="category" value="{{ code }}" 
+                            {% if request.GET.category == code %}checked{% endif %}>
+                            {{ name }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title">Difficulty</div>
+                    <div class="filter-options">
+                        {% for code, name in difficulties %}
+                        <label class="checkbox-label">
+                            <input type="radio" name="difficulty" value="{{ code }}" 
+                            {% if request.GET.difficulty == code %}checked{% endif %}>
+                            {{ name }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title">Activities</div>
+                    <div class="filter-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="activities" value="skiing" 
+                            {% if 'skiing' in request.GET.activities %}checked{% endif %}>
+                            Skiing
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="activities" value="trekking" 
+                            {% if 'trekking' in request.GET.activities %}checked{% endif %}>
+                            Trekking
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="activities" value="houseboat" 
+                            {% if 'houseboat' in request.GET.activities %}checked{% endif %}>
+                            Houseboat Stay
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="activities" value="sightseeing" 
+                            {% if 'sightseeing' in request.GET.activities %}checked{% endif %}>
+                            Sightseeing
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Apply Filters</button>
+                <a href="{% url 'package_list' %}" class="btn-outline"
+                    style="width: 100%; margin-top: 0.5rem; text-align: center; border: none;">Clear Filters</a>
+            </form>
+        </aside>
+
+        <!-- Package Grid -->
+        <div class="packages-content">
+            <div class="packages-header">
+                <div>
+                    <strong>{{ packages.count }}</strong> packages found
+                </div>
+                <select class="sort-select" onchange="updateSort(this.value)">
+                    <option value="popularity" {% if request.GET.sort == 'popularity' %}selected{% endif %}>Most Popular
+                    </option>
+                    <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price: Low to
+                        High</option>
+                    <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price: High to
+                        Low</option>
+                    <option value="duration" {% if request.GET.sort == 'duration' %}selected{% endif %}>Duration</option>
+                    <option value="rating" {% if request.GET.sort == 'rating' %}selected{% endif %}>Top Rated</option>
+                </select>
+            </div>
+
+            <div class="grid">
+                {% for package in packages %}
+                <div class="card">
+                    <div class="card-img-wrapper">
+                        <span class="card-badge">{{ package.get_category_display }}</span>
+                        {% if package.image %}
+                        <img src="{{ package.image.url }}" alt="{{ package.title }}" class="card-img">
+                        {% else %}
+                        <div class="card-img"
+                            style="background-color: #ddd; display: flex; align-items: center; justify-content: center;">
+                            No Image</div>
+                        {% endif %}
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">{{ package.title }}</h3>
+                        <div class="card-meta">
+                            <span>⏱ {{ package.duration }}</span>
+                            <span>📍 {{ package.destination.name }}</span>
+                        </div>
+                        <div class="card-meta">
+                            <span>💪 {{ package.get_difficulty_level_display }}</span>
+                            <span>👥 Group: {{ package.group_size_min }}-{{ package.group_size_max }}</span>
+                        </div>
+                        <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+                            {{package.overview|truncatewords:15 }}
+                        </p>
+
+                        {% if package.activities %}
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                            {% for activity in package.get_activities_list|slice:":3" %}
+                            <span
+                                style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; color: #555;">
+                                {{activity }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="price-row">
+                            <div class="price">
+                                ₹{{ package.price }}
+                                <small>/ person</small>
+                            </div>
+                            <a href="{% url 'package_detail' package.slug %}" class="btn-outline"
+                                style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div
+                    style="grid-column: 1/-1; text-align: center; padding: 3rem; background: #fff; border-radius: 16px;">
+                    <h3>No packages found matching your criteria</h3>
+                    <p>Try adjusting your filters or <a href="{% url 'package_list' %}"
+                            style="color: var(--primary-color);">view all packages</a>.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleFilters() {
+        document.getElementById('filterSidebar').classList.toggle('active');
+    }
+
+    function updateSort(value) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('sort', value);
+        window.location.search = urlParams.toString();
+    }
+</script>
+{% endblock %}

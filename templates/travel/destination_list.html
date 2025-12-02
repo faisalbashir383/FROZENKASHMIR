@@ -1,0 +1,32 @@
+{% extends 'travel/base.html' %}
+
+{% block content %}
+<section class="section">
+    <h2 class="section-title">Explore Destinations</h2>
+    <div class="grid">
+        {% for destination in destinations %}
+        <div class="card">
+            <div class="card-img-wrapper">
+                {% if destination.image %}
+                <img src="{{ destination.image.url }}" alt="{{ destination.name }}" class="card-img">
+                {% else %}
+                <div class="card-img"
+                    style="background-color: #ddd; display: flex; align-items: center; justify-content: center;">No
+                    Image</div>
+                {% endif %}
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">{{ destination.name }}</h3>
+                <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">
+                    {{destination.description|truncatewords:20 }}
+                </p>
+                <a href="{% url 'destination_detail' destination.slug %}" class="btn-outline"
+                    style="padding: 0.5rem 1.2rem; font-size: 0.9rem; display: inline-block;">Explore</a>
+            </div>
+        </div>
+        {% empty %}
+        <p>No destinations found.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

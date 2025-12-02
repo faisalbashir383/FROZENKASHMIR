@@ -1,0 +1,131 @@
+{% extends 'travel/base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-slider" style="height: 60vh;">
+    <div class="swiper-slide"
+        style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), {% if destination.image %}url('{{ destination.image.url }}'){% else %}#333{% endif %}; background-size: cover; background-position: center;">
+        <div class="hero-content">
+            <h1>{{ destination.name }}</h1>
+            <p>{{ destination.description|truncatewords:20 }}</p>
+        </div>
+    </div>
+</section>
+
+<!-- About & Info Section -->
+<section class="section">
+    <div
+        style="max-width: 1000px; margin: 0 auto; background: white; padding: 3rem; border-radius: 20px; box-shadow: var(--shadow-md); margin-top: -100px; position: relative; z-index: 10;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1.5rem; font-size: 2rem;">About {{ destination.name }}
+        </h3>
+        <p style="margin-bottom: 2.5rem; color: #555; line-height: 1.8; font-size: 1.05rem;">
+            {{ destination.description}}
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+            <div>
+                <h4
+                    style="color: var(--accent-color); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1.5rem;">✨</span> Highlights
+                </h4>
+                <ul style="list-style: none; padding: 0;">
+                    {% for highlight in destination.highlights.split|slice:":5" %}
+                    <!-- Assuming highlights are comma separated string, this is a simple split. Ideally backend should handle this list -->
+                    <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--primary-color);">•</span>
+                        {{ highlight }}
+                    </li>
+                    {% endfor %}
+                    <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--primary-color);">•</span>
+                        {{ destination.highlights }}
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h4
+                    style="color: var(--accent-color); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1.5rem;">🗓</span> Best Time to Visit
+                </h4>
+                <p style="color: #555;">{{ destination.best_time_to_visit }}</p>
+
+                <h4
+                    style="color: var(--accent-color); margin-bottom: 1rem; margin-top: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1.5rem;">🤔</span> Why Visit?
+                </h4>
+                <p style="color: #555;">Experience the unique charm of {{ destination.name }}, from its breathtaking
+                    landscapes to its rich cultural heritage. Perfect for nature lovers and adventure seekers alike.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Section (Placeholder) -->
+<section class="section" style="background-color: #f8f9fa;">
+    <h2 class="section-title">Photo Gallery</h2>
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+        {% if gallery_images %}
+        {% for image_url in gallery_images %}
+        <div style="height: 200px; background-color: #ddd; border-radius: 10px; overflow: hidden;">
+            <img src="{{ image_url }}" alt="Gallery {{ forloop.counter }}"
+                style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        {% endfor %}
+        {% else %}
+        <div style="height: 200px; background-color: #ddd; border-radius: 10px; overflow: hidden; display:flex; align-items:center; justify-content:center; color:#666;">
+            No images available at the moment.
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Map Section (Placeholder) -->
+<section class="section">
+    <h2 class="section-title">Location</h2>
+    <div
+        style="width: 100%; height: 400px; background-color: #eee; border-radius: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: #888;">
+        <!-- Embed Google Map here in production -->
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105627.86877764654!2d74.7286282645672!3d34.08365313341804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38e1855686e3c5ef%3A0x662248e02a6f15e1!2sSrinagar!5e0!3m2!1sen!2sin!4v1645516000000!5m2!1sen!2sin"
+            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+</section>
+
+<!-- Available Packages -->
+<section class="section" style="background-color: #f8f9fa;">
+    <h2 class="section-title">Packages in {{ destination.name }}</h2>
+    <div class="grid">
+        {% for package in destination.packages.all %}
+        <div class="card">
+            <div class="card-img-wrapper">
+                <span class="card-badge">{{ package.get_category_display }}</span>
+                {% if package.image %}
+                <img src="{{ package.image.url }}" alt="{{ package.title }}" class="card-img">
+                {% else %}
+                <div class="card-img"
+                    style="background-color: #ddd; display: flex; align-items: center; justify-content: center;">No
+                    Image</div>
+                {% endif %}
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">{{ package.title }}</h3>
+                <div class="card-meta">
+                    <span>⏱ {{ package.duration }}</span>
+                    <span>📍 {{ package.destination.name }}</span>
+                </div>
+                <div class="price-row">
+                    <div class="price">
+                        ₹{{ package.price }}
+                        <small>/ person</small>
+                    </div>
+                    <a href="{% url 'package_detail' package.slug %}" class="btn-outline"
+                        style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No packages available for this destination yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
