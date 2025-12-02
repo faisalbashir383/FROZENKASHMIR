@@ -1,0 +1,21 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/FROZENKASHMIR
+RuntimeDirectory=gunicorn
+RuntimeDirectoryMode=0755
+ExecStart=/home/ubuntu/FROZENKASHMIR/venv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn/gunicorn.sock \
+          FROZENKASHMIR.wsgi:application
+
+
+[Install]
+WantedBy=multi-user.target
