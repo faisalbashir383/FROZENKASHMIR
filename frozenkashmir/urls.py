@@ -22,6 +22,7 @@ from django.contrib.sitemaps.views import sitemap
 from travel.sitemaps import PackageSitemap, DestinationSitemap, StaticViewSitemap
 from travel.seo_views import robots_txt
 
+
 # Sitemap configuration
 sitemaps = {
     'packages': PackageSitemap,
