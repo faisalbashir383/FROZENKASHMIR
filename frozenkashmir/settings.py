@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+env_path = Path(BASE_DIR) / 'env'
+load_dotenv(dotenv_path=env_path)
 
 # Application definition
 
@@ -73,10 +76,21 @@ WSGI_APPLICATION = 'frozenkashmir.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv("FROZENKASHMIR_DB_NAME"),
+        'USER': os.getenv("FROZENKASHMIR_DB_USER"),
+        'PASSWORD': os.getenv("FROZENKASHMIR_DB_PASSWORD"),
+        'HOST': os.getenv("FROZENKASHMIR_DB_HOST"),
+        'PORT': os.getenv("FROZENKASHMIR_DB_PORT"),
     }
 }
 
