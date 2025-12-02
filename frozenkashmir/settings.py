@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-env_path = Path(BASE_DIR) / 'env'
+env_path = Path(BASE_DIR) / '.env'
 load_dotenv(dotenv_path=env_path)
 
 # Application definition
