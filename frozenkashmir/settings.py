@@ -28,6 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+# Site ID for django.contrib.sites
+SITE_ID = 1
+
 env_path = Path(BASE_DIR) / '.env'
 load_dotenv(dotenv_path=env_path)
 
@@ -40,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
+    'django.contrib.sites',
     'travel',
 ]
 
