@@ -261,3 +261,7 @@ def blog_detail(request, slug):
 def blog_category(request, slug):
     """Filter blogs by category - redirects to blog_list with category param"""
     return redirect(f'/blog/?category={slug}')
+
+def privacy_policy(request):
+    """Display the privacy policy page"""
+    return render(request, 'travel/privacy_policy.html')

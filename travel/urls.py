@@ -12,4 +12,5 @@ urlpatterns = [
     path('blog/', views.blog_list, name='blog_list'),
     path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
     path('blog/category/<slug:slug>/', views.blog_category, name='blog_category'),
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
 ]
