@@ -1,0 +1,155 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block title %}Travel Blog - Frozen Kashmir{% endblock %}
+{% block meta_description %}Discover Kashmir travel tips, destination guides, and adventure stories. Read our travel
+blog for insider insights on visiting Kashmir.{% endblock %}
+
+{% block content %}
+<!-- Blog Hero Section -->
+<section
+    style="background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); color: white; padding: 6rem 5% 4rem; text-align: center;">
+    <h1 style="font-size: 3rem; margin-bottom: 1rem;">Travel Blog</h1>
+    <p style="font-size: 1.2rem; opacity: 0.95; max-width: 600px; margin: 0 auto 2rem;">Discover Kashmir through our
+        stories, tips, and insider guides</p>
+
+    <!-- Search Bar -->
+    <form method="GET" style="max-width: 500px; margin: 0 auto; display: flex; gap: 0.5rem;">
+        <input type="text" name="search" placeholder="Search blog posts..." value="{{ search_query }}"
+            style="flex: 1; padding: 1rem; border-radius: 50px; border: none; outline: none;">
+        <button type="submit" class="btn"
+            style="background: var(--primary-color); color: white; border-radius: 50px;">Search</button>
+    </form>
+</section>
+
+<!-- Category Filter Tabs -->
+<section class="section" style="padding-top: 2rem;">
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
+        <a href="{% url 'blog_list' %}" class="btn-outline {% if not current_category %}active{% endif %}"
+            style="{% if not current_category %}background: var(--primary-color); color: white;{% endif %}">
+            All Posts
+        </a>
+        {% for category in categories %}
+        <a href="?category={{ category.slug }}"
+            class="btn-outline {% if current_category == category.slug %}active{% endif %}"
+            style="{% if current_category == category.slug %}background: var(--primary-color); color: white;{% endif %}">
+            {{ category.name }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 350px; gap: 3rem; align-items: start;">
+        <!-- Blog Posts Grid -->
+        <div>
+            {% if page_obj %}
+            <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+                {% for post in page_obj %}
+                <article class="card" style="cursor: pointer; transition: transform 0.3s ease;">
+                    <div class="card-img-wrapper">
+                        <img src="{{ post.featured_image }}" alt="{{ post.title }}" class="card-img"
+                            style="height: 200px; object-fit: cover;">
+                        {% if post.category %}
+                        <span class="card-badge">{{ post.category.name }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title" style="font-size: 1.3rem; margin-bottom: 0.5rem;">
+                            <a href="{% url 'blog_detail' post.slug %}"
+                                style="color: var(--primary-color); text-decoration: none;">
+                                {{ post.title }}
+                            </a>
+                        </h3>
+                        <div style="display: flex; gap: 1rem; color: #888; font-size: 0.85rem; margin-bottom: 0.75rem;">
+                            <span>📅 {{ post.created_at|date:"M d, Y" }}</span>
+                            <span>👁 {{ post.view_count }} views</span>
+                        </div>
+                        <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">{{ post.excerpt }}</p>
+                        <a href="{% url 'blog_detail' post.slug %}" class="btn-outline"
+                            style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">Read More</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem;">
+                {% if page_obj.has_previous %}
+                <a href="?page=1{% if current_category %}&category={{ current_category }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}"
+                    class="btn-outline">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}"
+                    class="btn-outline">Previous</a>
+                {% endif %}
+
+                <span style="padding: 0.5rem 1rem; background: var(--primary-color); color: white; border-radius: 5px;">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}"
+                    class="btn-outline">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if current_category %}&category={{ current_category }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}"
+                    class="btn-outline">Last</a>
+                {% endif %}
+            </div>
+            {% endif %}
+            {% else %}
+            <p style="text-align: center; color: #888; font-size: 1.1rem;">No blog posts found.</p>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <aside style="position: sticky; top: 100px;">
+            <!-- Popular Posts -->
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;">Popular Posts</h3>
+                {% for post in popular_posts %}
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                    <img src="{{ post.featured_image }}" alt="{{ post.title }}"
+                        style="width: 80px; height: 80px; object-fit: cover; border-radius: 10px;">
+                    <div>
+                        <a href="{% url 'blog_detail' post.slug %}"
+                            style="color: var(--primary-color); font-weight: 600; text-decoration: none; font-size: 0.95rem;">
+                            {{ post.title|truncatewords:8 }}
+                        </a>
+                        <p style="color: #888; font-size: 0.85rem; margin-top: 0.25rem;">{{ post.view_count }} views</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="color: #888;">No popular posts yet.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Categories Widget -->
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 15px;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;">Categories</h3>
+                <ul style="list-style: none; padding: 0;">
+                    {% for category in categories %}
+                    <li style="margin-bottom: 0.75rem;">
+                        <a href="?category={{ category.slug }}"
+                            style="color: #555; text-decoration: none; display: flex; justify-content: space-between;">
+                            <span>{{ category.name }}</span>
+                            <span style="color: var(--accent-color); font-weight: 600;">{{ category.posts.count
+                                }}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<style>
+    @media (max-width: 768px) {
+        .section>div {
+            grid-template-columns: 1fr !important;
+        }
+
+        aside {
+            position: relative !important;
+            top: 0 !important;
+        }
+    }
+</style>
+{% endblock %}

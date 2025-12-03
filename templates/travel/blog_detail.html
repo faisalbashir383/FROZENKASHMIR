@@ -1,0 +1,133 @@
+{% extends 'travel/base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} - Frozen Kashmir Blog{% endblock %}
+{% block meta_description %}{{ post.meta_description|default:post.excerpt }}{% endblock %}
+{% block meta_keywords %}{{ post.meta_keywords }}, Kashmir travel, travel blog{% endblock %}
+
+{% block content %}
+<!-- Blog Post Header -->
+<article style="max-width: 900px; margin: 0 auto; padding: 4rem 5% 2rem;">
+    <!-- Featured Image -->
+    <div style="border-radius: 20px; overflow: hidden; margin-bottom: 2rem; box-shadow: var(--shadow-lg);">
+        <img src="{{ post.featured_image }}" alt="{{ post.title }}"
+            style="width: 100%; height: 500px; object-fit: cover;">
+    </div>
+
+    <!-- Post Meta -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+        {% if post.category %}
+        <a href="?category={{ post.category.slug }}"
+            style="background: var(--accent-color); color: var(--primary-color); padding: 0.5rem 1rem; border-radius: 20px; text-decoration: none; font-size: 0.9rem; font-weight: 600;">
+            {{ post.category.name }}
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Post Title -->
+    <h1
+        style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 1rem; text-align: center; line-height: 1.3;">
+        {{ post.title }}
+    </h1>
+
+    <!-- Author and Date -->
+    <div
+        style="display: flex; justify-content: center; gap: 2rem; color: #888; margin-bottom: 3rem; font-size: 0.95rem;">
+        <span>✍️ By {{ post.author }}</span>
+        <span>📅 {{ post.created_at|date:"F d, Y" }}</span>
+        <span>👁 {{ post.view_count }} views</span>
+    </div>
+
+    <!-- Post Content -->
+    <div style="line-height: 1.8; font-size: 1.1rem; color: #333;">
+        {{ post.content|linebreaks }}
+    </div>
+
+    <!-- Tags -->
+    {% if post.tags %}
+    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ddd;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Tags:</h3>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            {% for tag in post.get_tags_list %}
+            <span
+                style="background: #f0f0f0; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; color: #666;">
+                #{{ tag }}
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Share Buttons -->
+    <div style="margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 15px; text-align: center;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Share this post</h3>
+        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank"
+                rel="noopener" class="btn" style="background: #1877f2; color: white;">
+                Facebook
+            </a>
+            <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title }}"
+                target="_blank" rel="noopener" class="btn" style="background: #1da1f2; color: white;">
+                Twitter
+            </a>
+            <a href="https://wa.me/?text={{ post.title }}%20{{ request.build_absolute_uri }}" target="_blank"
+                rel="noopener" class="btn" style="background: #25d366; color: white;">
+                WhatsApp
+            </a>
+        </div>
+    </div>
+</article>
+
+<!-- Related Posts Section -->
+{% if related_posts %}
+<section class="section" style="background-color: #f8f9fa;">
+    <h2 class="section-title">Related Posts</h2>
+    <div class="grid"
+        style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
+        {% for related in related_posts %}
+        <article class="card">
+            <div class="card-img-wrapper">
+                <img src="{{ related.featured_image }}" alt="{{ related.title }}" class="card-img"
+                    style="height: 200px; object-fit: cover;">
+                {% if related.category %}
+                <span class="card-badge">{{ related.category.name }}</span>
+                {% endif %}
+            </div>
+            <div class="card-content">
+                <h3 class="card-title" style="font-size: 1.2rem;">
+                    <a href="{% url 'blog_detail' related.slug %}"
+                        style="color: var(--primary-color); text-decoration: none;">
+                        {{ related.title }}
+                    </a>
+                </h3>
+                <div style="color: #888; font-size: 0.85rem; margin-bottom: 0.75rem;">
+                    <span>📅 {{ related.created_at|date:"M d, Y" }}</span>
+                </div>
+                <p style="color: #666; margin-bottom: 1rem; font-size: 0.95rem;">{{ related.excerpt|truncatewords:15 }}
+                </p>
+                <a href="{% url 'blog_detail' related.slug %}" class="btn-outline"
+                    style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">Read More</a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Back to Blog Button -->
+<div style="text-align: center; padding: 2rem 0;">
+    <a href="{% url 'blog_list' %}" class="btn" style="padding: 1rem 2rem;">← Back to Blog</a>
+</div>
+
+<style>
+    @media (max-width: 768px) {
+        article h1 {
+            font-size: 2rem !important;
+        }
+
+        article>div:first-of-type img {
+            height: 300px !important;
+        }
+    }
+</style>
+{% endblock %}
