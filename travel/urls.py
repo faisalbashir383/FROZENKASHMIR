@@ -9,4 +9,7 @@ urlpatterns = [
     path('destinations/<slug:slug>/', views.destination_detail, name='destination_detail'),
     path('contact/', views.contact, name='contact'),
     path('search/', views.search, name='search'),
+    path('blog/', views.blog_list, name='blog_list'),
+    path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
+    path('blog/category/<slug:slug>/', views.blog_category, name='blog_category'),
 ]

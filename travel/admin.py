@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Destination, Package, Booking, Inquiry, Review, Testimonial
+from .models import Destination, Package, Booking, Inquiry, Review, Testimonial, BlogCategory, BlogPost
 
 @admin.register(Destination)
 class DestinationAdmin(admin.ModelAdmin):
@@ -34,3 +34,17 @@ class TestimonialAdmin(admin.ModelAdmin):
     list_display = ('name', 'location', 'rating', 'is_featured', 'created_at')
     list_filter = ('is_featured', 'rating')
     search_fields = ('name', 'location', 'testimonial')
+
+@admin.register(BlogCategory)
+class BlogCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'created_at')
+    prepopulated_fields = {'slug': ('name',)}
+    search_fields = ('name',)
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'author', 'is_featured', 'view_count', 'created_at')
+    list_filter = ('category', 'is_featured', 'created_at')
+    search_fields = ('title', 'content', 'tags')
+    prepopulated_fields = {'slug': ('title',)}
+    readonly_fields = ('view_count', 'created_at', 'updated_at')

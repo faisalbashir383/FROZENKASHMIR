@@ -134,3 +134,52 @@ class Testimonial(models.Model):
     
     def __str__(self):
         return f"{self.name} - {self.location}"
+
+class BlogCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name_plural = 'Blog Categories'
+        ordering = ['name']
+    
+    def __str__(self):
+        return self.name
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    author = models.CharField(max_length=100, default='FrozenKashmir Team')
+    category = models.ForeignKey(BlogCategory, on_delete=models.SET_NULL, null=True, related_name='posts')
+    featured_image = models.URLField(help_text="URL to featured image from Unsplash")
+    excerpt = models.TextField(max_length=300, help_text="Short summary for listings")
+    content = models.TextField(help_text="Full blog post content")
+    tags = models.CharField(max_length=200, blank=True, help_text="Comma-separated tags")
+    is_featured = models.BooleanField(default=False, help_text="Featured on homepage")
+    view_count = models.PositiveIntegerField(default=0)
+    
+    # SEO fields
+    meta_description = models.CharField(max_length=160, blank=True)
+    meta_keywords = models.CharField(max_length=200, blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return self.title
+    
+    def get_tags_list(self):
+        """Return tags as a list"""
+        if self.tags:
+            return [tag.strip() for tag in self.tags.split(',')]
+        return []
+    
+    def increment_views(self):
+        """Increment view count"""
+        self.view_count += 1
+        self.save(update_fields=['view_count'])

@@ -196,3 +196,66 @@ def search(request):
         'date': date,
         'travelers': travelers
     })
+
+def blog_list(request):
+    """Display all blog posts with filtering and search"""
+    from django.core.paginator import Paginator
+    from .models import BlogPost, BlogCategory
+    
+    posts = BlogPost.objects.all()
+    
+    # Filter by category
+    category_slug = request.GET.get('category')
+    if category_slug:
+        posts = posts.filter(category__slug=category_slug)
+    
+    # Search functionality
+    search_query = request.GET.get('search')
+    if search_query:
+        posts = posts.filter(
+            Q(title__icontains=search_query) |
+            Q(content__icontains=search_query) |
+            Q(tags__icontains=search_query)
+        )
+    
+    # Pagination
+    paginator = Paginator(posts, 12)  # 12 posts per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    # Get all categories and popular posts for sidebar
+    categories = BlogCategory.objects.all()
+    popular_posts = BlogPost.objects.order_by('-view_count')[:5]
+    
+    context = {
+        'page_obj': page_obj,
+        'categories': categories,
+        'popular_posts': popular_posts,
+        'search_query': search_query,
+        'current_category': category_slug,
+    }
+    return render(request, 'travel/blog_list.html', context)
+
+def blog_detail(request, slug):
+    """Display individual blog post"""
+    from .models import BlogPost
+    
+    post = get_object_or_404(BlogPost, slug=slug)
+    
+    # Increment view count
+    post.increment_views()
+    
+    # Get related posts (same category, exclude current post)
+    related_posts = BlogPost.objects.filter(
+        category=post.category
+    ).exclude(id=post.id)[:3]
+    
+    context = {
+        'post': post,
+        'related_posts': related_posts,
+    }
+    return render(request, 'travel/blog_detail.html', context)
+
+def blog_category(request, slug):
+    """Filter blogs by category - redirects to blog_list with category param"""
+    return redirect(f'/blog/?category={slug}')

@@ -9,8 +9,10 @@
 
     {# SEO Meta Tags #}
     <title>{% block title %}Frozen Kashmir Tour & Travels - Best Kashmir Tour Packages{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}Explore Kashmir with Frozen Kashmir Tours. Book customized tour packages for Gulmarg, Pahalgam, Srinagar. Honeymoon, family & adventure trips.{% endblock %}">
-    <meta name="keywords" content="{% block meta_keywords %}Kashmir tours, Gulmarg packages, Pahalgam trips, Kashmir honeymoon, Kashmir tourism, Srinagar tours{% endblock %}">
+    <meta name="description"
+        content="{% block meta_description %}Explore Kashmir with Frozen Kashmir Tours. Book customized tour packages for Gulmarg, Pahalgam, Srinagar. Honeymoon, family & adventure trips.{% endblock %}">
+    <meta name="keywords"
+        content="{% block meta_keywords %}Kashmir tours, Gulmarg packages, Pahalgam trips, Kashmir honeymoon, Kashmir tourism, Srinagar tours{% endblock %}">
     <meta name="author" content="Frozen Kashmir Tour & Travels">
     <meta name="robots" content="index, follow">
 
@@ -18,9 +20,12 @@
     <link rel="canonical" href="{% block canonical_url %}https://frozenkashmir.com{{ request.path }}{% endblock %}">
 
     {# Open Graph Tags for Social Media #}
-    <meta property="og:title" content="{% block og_title %}{% block title_text %}Frozen Kashmir Tour & Travels{% endblock %}{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Explore Kashmir with Frozen Kashmir Tours. Book customized tour packages for Gulmarg, Pahalgam, Srinagar.{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}https://frozenkashmir.com{% static 'travel/images/hero-bg.jpg' %}{% endblock %}">
+    <meta property="og:title"
+        content="{% block og_title %}{% block title_text %}Frozen Kashmir Tour & Travels{% endblock %}{% endblock %}">
+    <meta property="og:description"
+        content="{% block og_description %}Explore Kashmir with Frozen Kashmir Tours. Book customized tour packages for Gulmarg, Pahalgam, Srinagar.{% endblock %}">
+    <meta property="og:image"
+        content="{% block og_image %}https://frozenkashmir.com{% static 'travel/images/hero-bg.jpg' %}{% endblock %}">
     <meta property="og:url" content="https://frozenkashmir.com{{ request.path }}">
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:site_name" content="Frozen Kashmir Tour & Travels">
@@ -28,12 +33,14 @@
     {# Twitter Card Tags #}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{% block twitter_title %}Frozen Kashmir Tour & Travels{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}Explore Kashmir with Frozen Kashmir Tours. Book customized tour packages.{% endblock %}">
-    <meta name="twitter:image" content="{% block twitter_image %}https://frozenkashmir.com{% static 'travel/images/hero-bg.jpg' %}{% endblock %}">
-    
+    <meta name="twitter:description"
+        content="{% block twitter_description %}Explore Kashmir with Frozen Kashmir Tours. Book customized tour packages.{% endblock %}">
+    <meta name="twitter:image"
+        content="{% block twitter_image %}https://frozenkashmir.com{% static 'travel/images/hero-bg.jpg' %}{% endblock %}">
+
     {# Favicon #}
     <link rel="icon" type="image/x-icon" href="{% static 'travel/images/favicon.ico' %}">
-    
+
     {# Fonts #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +49,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="{% static 'travel/css/style.css' %}">
-    
+
     {# JSON-LD Structured Data - Organization #}
     <script type="application/ld+json">
     {
@@ -68,7 +75,7 @@
       "priceRange": "$$"
     }
     </script>
-    
+
     {% block extra_structured_data %}{% endblock %}
     {% block extra_css %}{% endblock %}
 </head>
@@ -81,6 +88,7 @@
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'package_list' %}">Packages</a></li>
                 <li><a href="{% url 'destination_list' %}">Destinations</a></li>
+                <li><a href="{% url 'blog_list' %}">Blog</a></li>
                 <li><a href="{% url 'contact' %}">Contact</a></li>
             </ul>
             <a href="{% url 'contact' %}" class="btn nav-cta">Book Now</a>
@@ -98,6 +106,7 @@
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'package_list' %}">Packages</a></li>
                 <li><a href="{% url 'destination_list' %}">Destinations</a></li>
+                <li><a href="{% url 'blog_list' %}">Blog</a></li>
                 <li><a href="{% url 'contact' %}">Contact</a></li>
             </ul>
             <a href="{% url 'contact' %}" class="btn" style="width: 100%; text-align: center; margin-top: 1rem;">Book
@@ -116,12 +125,8 @@
 
         {% block content %}{% endblock %}
         <!-- Test AdSense Ad Unit for Verification -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-6955346946355268"
-             data-ad-slot="1234567890"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6955346946355268"
+            data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
 
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
@@ -140,6 +145,7 @@
                     <li><a href="{% url 'home' %}">Home</a></li>
                     <li><a href="{% url 'package_list' %}">Packages</a></li>
                     <li><a href="{% url 'destination_list' %}">Destinations</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blog</a></li>
                     <li><a href="{% url 'contact' %}">Contact Us</a></li>
                 </ul>
             </div>
