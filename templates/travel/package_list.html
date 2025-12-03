@@ -3,45 +3,45 @@
 {% block content %}
 <section class="section">
     <!-- Recommendations Section -->
-    {% if recommendations %}
-    <div class="recommendations-section">
-        <div class="recommendations-header">
-            <span style="font-size: 2rem;">✨</span>
-            <h3>Recommended for You</h3>
-        </div>
-        <div class="grid">
-            {% for package in recommendations %}
-            <div class="card">
-                <div class="card-img-wrapper">
-                    <span class="card-badge">Recommended</span>
-                    {% if package.image %}
-                    <img src="{{ package.image.url }}" alt="{{ package.title }}" class="card-img">
-                    {% else %}
-                    <div class="card-img"
-                        style="background-color: #ddd; display: flex; align-items: center; justify-content: center;">No
-                        Image</div>
-                    {% endif %}
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">{{ package.title }}</h3>
-                    <div class="card-meta">
-                        <span>⏱ {{ package.duration }}</span>
-                        <span>📍 {{ package.destination.name }}</span>
-                    </div>
-                    <div class="price-row">
-                        <div class="price">
-                            ₹{{ package.price }}
-                            <small>/ person</small>
-                        </div>
-                        <a href="{% url 'package_detail' package.slug %}" class="btn-outline"
-                            style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">View Details</a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
+<!--    {% if recommendations %}-->
+<!--    <div class="recommendations-section">-->
+<!--        <div class="recommendations-header">-->
+<!--            <span style="font-size: 2rem;">✨</span>-->
+<!--            <h3>Recommended for You</h3>-->
+<!--        </div>-->
+<!--        <div class="grid">-->
+<!--            {% for package in recommendations %}-->
+<!--            <div class="card">-->
+<!--                <div class="card-img-wrapper">-->
+<!--                    <span class="card-badge">Recommended</span>-->
+<!--                    {% if package.image %}-->
+<!--                    <img src="{{ package.image.url }}" alt="{{ package.title }}" class="card-img">-->
+<!--                    {% else %}-->
+<!--                    <div class="card-img"-->
+<!--                        style="background-color: #ddd; display: flex; align-items: center; justify-content: center;">No-->
+<!--                        Image</div>-->
+<!--                    {% endif %}-->
+<!--                </div>-->
+<!--                <div class="card-content">-->
+<!--                    <h3 class="card-title">{{ package.title }}</h3>-->
+<!--                    <div class="card-meta">-->
+<!--                        <span>⏱ {{ package.duration }}</span>-->
+<!--                        <span>📍 {{ package.destination.name }}</span>-->
+<!--                    </div>-->
+<!--                    <div class="price-row">-->
+<!--                        <div class="price">-->
+<!--                            ₹{{ package.price }}-->
+<!--                            <small>/ person</small>-->
+<!--                        </div>-->
+<!--                        <a href="{% url 'package_detail' package.slug %}" class="btn-outline"-->
+<!--                            style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">View Details</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            {% endfor %}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    {% endif %}-->
 
     <h2 class="section-title">All Packages</h2>
 
@@ -103,23 +103,23 @@
                     <div class="filter-title">Activities</div>
                     <div class="filter-options">
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="skiing" 
-                            {% if 'skiing' in request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="skiing"
+                                   {% if 'skiing' in request.GET.activities %}checked{% endif %}>
                             Skiing
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="trekking" 
-                            {% if 'trekking' in request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="trekking"
+                                   {% if 'trekking' in request.GET.activities %}checked{% endif %}>
                             Trekking
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="houseboat" 
-                            {% if 'houseboat' in request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="houseboat"
+                                   {% if 'houseboat' in request.GET.activities %}checked{% endif %}>
                             Houseboat Stay
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="sightseeing" 
-                            {% if 'sightseeing' in request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="sightseeing"
+                                   {% if 'sightseeing' in request.GET.activities %}checked{% endif %}>
                             Sightseeing
                         </label>
                     </div>
