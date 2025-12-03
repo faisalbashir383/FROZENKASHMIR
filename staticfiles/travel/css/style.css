@@ -297,6 +297,10 @@ nav {
     transition: var(--transition);
 }
 
+.search-btn {
+    flex: 0 0 150px;
+}
+
 .search-box input:focus,
 .search-box select:focus {
     outline: none;
@@ -521,7 +525,8 @@ footer {
     }
 
     /* Experience Kashmir section - stack on mobile */
-    .section>div[style*="grid-template-columns: 1fr 1fr"] {
+    .section>div[style*="grid-template-columns: 1fr 1fr"],
+    .experience-grid {
         grid-template-columns: 1fr !important;
         gap: 2rem !important;
     }
@@ -561,6 +566,42 @@ footer {
 
     .nav-cta {
         display: none;
+    }
+
+    /* Search button mobile */
+    .search-btn {
+        flex: 1 !important;
+        min-width: 100px;
+    }
+
+    /* Package detail page - stack layout on mobile */
+    .package-detail-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    .package-detail-container > div:last-child {
+        position: static !important;
+    }
+
+    /* Recommendations section mobile */
+    .recommendations-section {
+        padding: 2rem 1.5rem !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .recommendations-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* Newsletter form mobile */
+    .newsletter-form {
+        flex-direction: column !important;
+        gap: 0.8rem !important;
+    }
+
+    .newsletter-form button {
+        width: 100%;
     }
 }
 
