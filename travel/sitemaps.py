@@ -1,6 +1,6 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
-from .models import Package, Destination
+from .models import Package, Destination, BlogPost
 
 
 class PackageSitemap(Sitemap):
@@ -36,7 +36,22 @@ class StaticViewSitemap(Sitemap):
     changefreq = "monthly"
     
     def items(self):
-        return ['home', 'contact', 'package_list', 'destination_list']
+        return ['home', 'contact', 'package_list', 'destination_list', 'blog_list']
     
     def location(self, item):
         return reverse(item)
+
+
+class BlogPostSitemap(Sitemap):
+    """Sitemap for blog posts"""
+    changefreq = "weekly"
+    priority = 0.8
+    
+    def items(self):
+        return BlogPost.objects.all()
+    
+    def lastmod(self, obj):
+        return obj.updated_at
+    
+    def location(self, obj):
+        return reverse('blog_detail', args=[obj.slug])

@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
-from travel.sitemaps import PackageSitemap, DestinationSitemap, StaticViewSitemap
+from travel.sitemaps import PackageSitemap, DestinationSitemap, StaticViewSitemap, BlogPostSitemap
 from travel.seo_views import robots_txt
 
 
@@ -28,6 +28,7 @@ sitemaps = {
     'packages': PackageSitemap,
     'destinations': DestinationSitemap,
     'static': StaticViewSitemap,
+    'blog': BlogPostSitemap,
 }
 
 urlpatterns = [
