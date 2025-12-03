@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db.models import Q
-from .models import Destination, Package, Booking, Inquiry, Review, Testimonial
+from .models import Destination, Package, Booking, Inquiry, Review, Testimonial, BlogPost
 import json
 from urllib import request as urllib_request, parse as urllib_parse
 
@@ -9,10 +9,12 @@ def home(request):
     featured_packages = Package.objects.filter(is_featured=True)[:6]
     destinations = Destination.objects.all()  # Get all destinations for slider
     testimonials = Testimonial.objects.filter(is_featured=True)[:6]
+    popular_blogs = BlogPost.objects.order_by('-view_count')[:6]  # Get top 6 most viewed blogs
     return render(request, 'travel/home.html', {
         'featured_packages': featured_packages,
         'destinations': destinations,
-        'testimonials': testimonials
+        'testimonials': testimonials,
+        'popular_blogs': popular_blogs
     })
 
 def get_recommended_packages(packages, user_preferences=None):
