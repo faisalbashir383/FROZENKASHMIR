@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db.models import Q
-from .models import Destination, Package, Booking, Inquiry, Review, Testimonial, BlogPost
+from .models import Destination, Package, Booking, Inquiry, Review, Testimonial, BlogPost, ContactSubmission
 import json
 from urllib import request as urllib_request, parse as urllib_parse
 
@@ -265,3 +265,59 @@ def blog_category(request, slug):
 def privacy_policy(request):
     """Display the privacy policy page"""
     return render(request, 'travel/privacy_policy.html')
+
+def submit_contact(request):
+    """Handle contact form submission via AJAX"""
+    from django.http import JsonResponse
+    from django.views.decorators.http import require_http_methods
+    from django.core.exceptions import ValidationError
+    
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
+    
+    try:
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        message = request.POST.get('message', '').strip()
+        newsletter = request.POST.get('newsletter') == 'true'
+        source_page = request.POST.get('source_page', request.META.get('HTTP_REFERER', 'Unknown'))
+        
+        # Validate that at least email or phone is provided
+        if not email and not phone:
+            return JsonResponse({
+                'success': False,
+                'error': 'Please provide at least an email or phone number.'
+            }, status=400)
+        
+        # Create contact submission
+        contact = ContactSubmission.objects.create(
+            email=email,
+            phone=phone,
+            message=message,
+            subscribed_newsletter=newsletter,
+            source_page=source_page[:500]  # Truncate to fit field
+        )
+        
+        # Update visitor tracking with email if available
+        if email and hasattr(request, 'visitor'):
+            visitor = request.visitor
+            if visitor and not visitor.email:  # Only update if email not already set
+                visitor.email = email
+                visitor.save(update_fields=['email'])
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Thank you! We\'ll get in touch with you soon.'
+        })
+        
+    except ValidationError as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=400)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': 'An error occurred. Please try again.'
+        }, status=500)
+

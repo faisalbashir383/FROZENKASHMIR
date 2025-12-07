@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Destination, Package, Booking, Inquiry, Review, Testimonial, BlogCategory, BlogPost
+from .models import Destination, Package, Booking, Inquiry, Review, Testimonial, BlogCategory, BlogPost, VisitorTracking, ContactSubmission
 
 @admin.register(Destination)
 class DestinationAdmin(admin.ModelAdmin):
@@ -48,3 +48,60 @@ class BlogPostAdmin(admin.ModelAdmin):
     search_fields = ('title', 'content', 'tags')
     prepopulated_fields = {'slug': ('title',)}
     readonly_fields = ('view_count', 'created_at', 'updated_at')
+
+@admin.register(VisitorTracking)
+class VisitorTrackingAdmin(admin.ModelAdmin):
+    list_display = ('ip_address', 'email', 'first_visit', 'last_visit', 'page_views', 'get_browser')
+    list_filter = ('first_visit', 'last_visit')
+    search_fields = ('ip_address', 'email', 'session_key')
+    readonly_fields = ('session_key', 'ip_address', 'email', 'user_agent', 'first_visit', 'last_visit', 'page_views', 'referrer')
+    date_hierarchy = 'first_visit'
+    
+    def get_browser(self, obj):
+        """Extract browser name from user agent"""
+        ua = obj.user_agent.lower()
+        if 'chrome' in ua:
+            return 'Chrome'
+        elif 'firefox' in ua:
+            return 'Firefox'
+        elif 'safari' in ua:
+            return 'Safari'
+        elif 'edge' in ua:
+            return 'Edge'
+        return 'Other'
+    get_browser.short_description = 'Browser'
+    
+    def has_add_permission(self, request):
+        """Prevent manual addition of visitor records"""
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        """Allow deletion for cleanup"""
+        return True
+
+@admin.register(ContactSubmission)
+class ContactSubmissionAdmin(admin.ModelAdmin):
+    list_display = ('get_contact', 'source_page_short', 'subscribed_newsletter', 'created_at')
+    list_filter = ('subscribed_newsletter', 'created_at')
+    search_fields = ('email', 'phone', 'message')
+    readonly_fields = ('email', 'phone', 'source_page', 'message', 'subscribed_newsletter', 'created_at')
+    date_hierarchy = 'created_at'
+    
+    def get_contact(self, obj):
+        """Display email or phone"""
+        if obj.email and obj.phone:
+            return f"{obj.email} / {obj.phone}"
+        return obj.email or obj.phone
+    get_contact.short_description = 'Contact Info'
+    
+    def source_page_short(self, obj):
+        """Display shortened source page URL"""
+        if len(obj.source_page) > 50:
+            return obj.source_page[:50] + '...'
+        return obj.source_page
+    source_page_short.short_description = 'Source Page'
+    
+    def has_add_permission(self, request):
+        """Prevent manual addition"""
+        return False
+

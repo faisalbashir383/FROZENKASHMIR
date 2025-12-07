@@ -183,3 +183,63 @@ class BlogPost(models.Model):
         """Increment view count"""
         self.view_count += 1
         self.save(update_fields=['view_count'])
+
+class VisitorTracking(models.Model):
+    """Track unique website visitors and their activity"""
+    session_key = models.CharField(max_length=100, unique=True, help_text="Unique session identifier")
+    ip_address = models.GenericIPAddressField(help_text="Visitor IP address")
+    email = models.EmailField(blank=True, help_text="Visitor email address (if provided)")
+    user_agent = models.CharField(max_length=500, blank=True, help_text="Browser/device information")
+    first_visit = models.DateTimeField(auto_now_add=True, help_text="First time visitor accessed site")
+    last_visit = models.DateTimeField(auto_now=True, help_text="Most recent visit")
+    page_views = models.PositiveIntegerField(default=1, help_text="Total pages viewed in this session")
+    referrer = models.URLField(max_length=500, blank=True, help_text="Page that referred the visitor")
+    
+    class Meta:
+        ordering = ['-last_visit']
+        verbose_name = 'Visitor Tracking'
+        verbose_name_plural = 'Visitor Tracking'
+    
+    def __str__(self):
+        return f"{self.ip_address} - {self.page_views} views"
+    
+    @classmethod
+    def get_unique_visitor_count(cls):
+        """Get total count of unique visitors"""
+        return cls.objects.count()
+    
+    @classmethod
+    def get_total_page_views(cls):
+        """Get total page views across all visitors"""
+        from django.db.models import Sum
+        result = cls.objects.aggregate(total_views=Sum('page_views'))
+        return result['total_views'] or 0
+
+class ContactSubmission(models.Model):
+    """Store contact information submitted by visitors"""
+    email = models.EmailField(blank=True, help_text="Visitor email address")
+    phone = models.CharField(max_length=20, blank=True, help_text="Visitor phone number")
+    source_page = models.CharField(max_length=500, help_text="Page URL where contact was submitted")
+    message = models.TextField(blank=True, help_text="Optional message from visitor")
+    subscribed_newsletter = models.BooleanField(default=False, help_text="Opted in for newsletter")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Contact Submission'
+        verbose_name_plural = 'Contact Submissions'
+    
+    def __str__(self):
+        contact = self.email or self.phone or 'No contact'
+        return f"{contact} - {self.created_at.strftime('%Y-%m-%d')}"
+    
+    def clean(self):
+        """Ensure at least email or phone is provided"""
+        from django.core.exceptions import ValidationError
+        if not self.email and not self.phone:
+            raise ValidationError('At least one of email or phone must be provided.')
+    
+    def save(self, *args, **kwargs):
+        """Run validation before saving"""
+        self.clean()
+        super().save(*args, **kwargs)
