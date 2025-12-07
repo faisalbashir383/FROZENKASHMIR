@@ -51,11 +51,23 @@ class BlogPostAdmin(admin.ModelAdmin):
 
 @admin.register(VisitorTracking)
 class VisitorTrackingAdmin(admin.ModelAdmin):
-    list_display = ('ip_address', 'email', 'first_visit', 'last_visit', 'page_views', 'get_browser')
-    list_filter = ('first_visit', 'last_visit')
-    search_fields = ('ip_address', 'email', 'session_key')
-    readonly_fields = ('session_key', 'ip_address', 'email', 'user_agent', 'first_visit', 'last_visit', 'page_views', 'referrer')
+    list_display = ('ip_address', 'email', 'get_location', 'timezone', 'first_visit', 'last_visit', 'page_views', 'get_browser')
+    list_filter = ('country', 'first_visit', 'last_visit')
+    search_fields = ('ip_address', 'email', 'city', 'country', 'session_key')
+    readonly_fields = ('session_key', 'ip_address', 'email', 'country', 'country_code', 'region', 'city', 'timezone', 'latitude', 'longitude', 'user_agent', 'first_visit', 'last_visit', 'page_views', 'referrer')
     date_hierarchy = 'first_visit'
+    
+    def get_location(self, obj):
+        """Display formatted location"""
+        parts = []
+        if obj.city:
+            parts.append(obj.city)
+        if obj.region:
+            parts.append(obj.region)
+        if obj.country:
+            parts.append(obj.country)
+        return ', '.join(parts) if parts else 'Unknown'
+    get_location.short_description = 'Location'
     
     def get_browser(self, obj):
         """Extract browser name from user agent"""

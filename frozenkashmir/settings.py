@@ -82,23 +82,24 @@ WSGI_APPLICATION = 'frozenkashmir.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("FROZENKASHMIR_DB_NAME"),
-        'USER': os.getenv("FROZENKASHMIR_DB_USER"),
-        'PASSWORD': os.getenv("FROZENKASHMIR_DB_PASSWORD"),
-        'HOST': os.getenv("FROZENKASHMIR_DB_HOST"),
-        'PORT': os.getenv("FROZENKASHMIR_DB_PORT"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# PostgreSQL configuration (commented out until database is created)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.getenv("FROZENKASHMIR_DB_NAME"),
+#         'USER': os.getenv("FROZENKASHMIR_DB_USER"),
+#         'PASSWORD': os.getenv("FROZENKASHMIR_DB_PASSWORD"),
+#         'HOST': os.getenv("FROZENKASHMIR_DB_HOST"),
+#         'PORT': os.getenv("FROZENKASHMIR_DB_PORT"),
+#     }
+# }
 
 
 # Password validation

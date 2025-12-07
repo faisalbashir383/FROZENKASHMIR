@@ -189,6 +189,16 @@ class VisitorTracking(models.Model):
     session_key = models.CharField(max_length=100, unique=True, help_text="Unique session identifier")
     ip_address = models.GenericIPAddressField(help_text="Visitor IP address")
     email = models.EmailField(blank=True, help_text="Visitor email address (if provided)")
+    
+    # Geographic information
+    country = models.CharField(max_length=100, blank=True, help_text="Country name")
+    country_code = models.CharField(max_length=2, blank=True, help_text="ISO country code")
+    region = models.CharField(max_length=100, blank=True, help_text="State/Region/Province")
+    city = models.CharField(max_length=100, blank=True, help_text="City name")
+    timezone = models.CharField(max_length=50, blank=True, help_text="Timezone")
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, help_text="Latitude")
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True, help_text="Longitude")
+    
     user_agent = models.CharField(max_length=500, blank=True, help_text="Browser/device information")
     first_visit = models.DateTimeField(auto_now_add=True, help_text="First time visitor accessed site")
     last_visit = models.DateTimeField(auto_now=True, help_text="Most recent visit")
@@ -201,7 +211,8 @@ class VisitorTracking(models.Model):
         verbose_name_plural = 'Visitor Tracking'
     
     def __str__(self):
-        return f"{self.ip_address} - {self.page_views} views"
+        location = f"{self.city}, {self.country}" if self.city and self.country else self.ip_address
+        return f"{location} - {self.page_views} views"
     
     @classmethod
     def get_unique_visitor_count(cls):
