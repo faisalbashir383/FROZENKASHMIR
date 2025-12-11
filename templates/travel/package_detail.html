@@ -1,16 +1,42 @@
 {% extends 'travel/base.html' %}
 
-{% block title %}{{ package.title }} - {{ package.destination.name }} Tour Package | Frozen Kashmir{% endblock %}
+{% block title %}{{ package.title }} - Book {{ package.destination.name }} Tour ₹{{ package.price }} | Frozen Kashmir
+{% endblock %}
 
-{% block meta_description %}{{ package.overview|truncatewords:30 }} Book now for ₹{{ package.price }}. Duration: {{
-package.duration }}.{% endblock %}
+{% block meta_description %}Book {{ package.title }} tour package for ₹{{ package.price }} per person. {{
+package.overview|truncatewords:30 }} Duration: {{ package.duration }}. Includes hotel, meals, and transport.
+{% endblock %}
 
-{% block meta_keywords %}{{ package.title }}, {{ package.destination.name }} tour, Kashmir {{
-package.get_category_display }} package, {{ package.duration }} Kashmir trip{% endblock %}
+{% block meta_keywords %}{{ package.title }}, {{ package.destination.name }} tour package, Kashmir {{
+package.get_category_display }} package, {{ package.duration }} Kashmir trip, book {{ package.destination.name }} tour,
+{{ package.destination.name }} {{ package.get_category_display }} tour, best {{ package.destination.name }} package,
+cheap {{ package.destination.name }} tour, affordable {{ package.destination.name }} trip, {{ package.destination.name
+}} holiday package, {{ package.destination.name }} vacation deal, {{ package.destination.name }} travel package, {{
+package.destination.name }} sightseeing tour, {{ package.destination.name }} guided tour, {{ package.destination.name }}
+group tour, {{ package.destination.name }} private tour, {{ package.destination.name }} customized tour, {{
+package.destination.name }} all inclusive, {{ package.destination.name }} with hotel, {{ package.destination.name }}
+with meals, {{ package.destination.name }} with transport, {{ package.destination.name }} pickup drop, {{
+package.destination.name }} airport transfer, book Kashmir tour online, Kashmir tour booking, Kashmir package booking,
+Kashmir trip reservation, Kashmir holiday booking, Kashmir vacation booking, Kashmir best price tour, Kashmir discounted
+package, Kashmir early bird offer, Kashmir last minute deal, Kashmir seasonal offer, Kashmir festival package, Kashmir
+winter tour package, Kashmir summer holiday, Kashmir spring tour, Kashmir autumn trip, Kashmir honeymoon package
+booking, Kashmir family tour booking, Kashmir adventure booking, Kashmir trekking package, Kashmir skiing package,
+Kashmir houseboat package, Kashmir luxury tour booking, Kashmir budget tour booking, Kashmir standard package, Kashmir
+deluxe tour, Kashmir premium package, Kashmir VVIP tour, Kashmir verified tour, Kashmir trusted operator, Kashmir rated
+package, Kashmir recommended tour, Kashmir top selling package, Kashmir popular tour, Kashmir trending package, Kashmir
+best reviewed tour, Kashmir 5 star package, Kashmir 4 star tour, Kashmir 3 star budget, Kashmir backpacker tour, Kashmir
+solo package, Kashmir couple package, Kashmir group tour, Kashmir senior tour, Kashmir corporate package, Kashmir
+student tour{% endblock %}
 
 {% block og_title %}{{ package.title }} - Kashmir Tour Package{% endblock %}
 {% block og_description %}{{ package.overview|truncatewords:25 }}{% endblock %}
-{% block og_image %}https://frozenkashmir.com{{ package.image.url }}{% endblock %}
+{% block og_image %}
+{% if package.image %}
+https://frozenkashmir.com{{ package.image.url }}
+{% else %}
+https://frozenkashmir.com/static/default-og.jpg
+{% endif %}
+{% endblock %}
 {% block og_type %}product{% endblock %}
 
 {% block extra_structured_data %}
@@ -21,7 +47,7 @@ package.get_category_display }} package, {{ package.duration }} Kashmir trip{% e
   "@type": "Product",
   "name": "{{ package.title }}",
   "description": "{{ package.overview|escapejs }}",
-  "image": "https://frozenkashmir.com{{ package.image.url }}",
+  "image": "https://frozenkashmir.com {% if package.image %}{{ package.image.url }}{% endif %}",
   "brand": {
     "@type": "Brand",
     "name": "Frozen Kashmir Tour & Travels"

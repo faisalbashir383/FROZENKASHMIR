@@ -1,16 +1,38 @@
 {% extends 'travel/base.html' %}
 
-{% block title %}{{ destination.name }} - Kashmir Destination Guide | Frozen Kashmir{% endblock %}
+{% block title %}{{ destination.name }} - Complete Travel Guide Kashmir | Frozen Kashmir Tours{% endblock %}
 
-{% block meta_description %}Explore {{ destination.name }}, Kashmir. {{ destination.description|truncatewords:25 }} Best
-time to visit: {{ destination.best_time_to_visit }}{% endblock %}
+{% block meta_description %}Complete travel guide to {{ destination.name }}, Kashmir. {{
+destination.description|truncatewords:25 }} Best time to visit: {{ destination.best_time_to_visit }}. Book tours,
+hotels, and activities.{% endblock %}
 
-{% block meta_keywords %}{{ destination.name }}, Kashmir tourism, {{ destination.name }} travel guide, places to visit
-in Kashmir{% endblock %}
+{% block meta_keywords %}{{ destination.name }}, {{ destination.name }} travel guide, {{ destination.name }} tourism, {{
+destination.name }} tour, {{ destination.name }} package, places to visit {{ destination.name }}, {{ destination.name }}
+attractions, {{ destination.name }} sightseeing, things to do {{ destination.name }}, {{ destination.name }} activities,
+{{ destination.name }} hotels, {{ destination.name }} resorts, {{ destination.name }} accommodation, stay in {{
+destination.name }}, {{ destination.name }} best hotels, {{ destination.name }} budget hotels, {{ destination.name }}
+luxury resorts, {{ destination.name }} houseboat, {{ destination.name }} restaurants, where to eat {{ destination.name
+}}, {{ destination.name }} food, {{ destination.name }} weather, {{ destination.name }} best time visit, {{
+destination.name }} temperature, {{ destination.name }} winter, {{ destination.name }} summer, {{ destination.name }}
+spring, {{ destination.name }} monsoon, {{ destination.name }} photography spots, {{ destination.name }} Instagram
+locations, {{ destination.name }} viewpoints, {{ destination.name }} scenic spots, how to reach {{ destination.name }},
+{{ destination.name }} by road, {{ destination.name }} by air, {{ destination.name }} nearest airport, {{
+destination.name }} distance Srinagar, {{ destination.name }} taxi fare, {{ destination.name }} car rental, {{
+destination.name }} local transport, {{ destination.name }} day trip, {{ destination.name }} itinerary, {{
+destination.name }} 1 day tour, {{ destination.name }} 2 days trip, {{ destination.name }} honeymoon, {{
+destination.name }} family trip, {{ destination.name }} adventure activities, {{ destination.name }} trekking, {{
+destination.name }} skiing, {{ destination.name }} sledging, {{ destination.name }} horse riding, {{ destination.name }}
+ATV ride, {{ destination.name }} cable car, {{ destination.name }} shopping, {{ destination.name }} souvenirs, {{
+destination.name }} local market, {{ destination.name }} handicrafts, {{ destination.name }} history, {{
+destination.name }} culture, {{ destination.name }} temples, {{ destination.name }} mosques, {{ destination.name }}
+shrines, {{ destination.name }} heritage sites, {{ destination.name }} gardens, {{ destination.name }} parks, {{
+destination.name }} lakes, {{ destination.name }} rivers, {{ destination.name }} waterfalls, {{ destination.name }}
+mountains, {{ destination.name }} meadows, {{ destination.name }} valleys, {{ destination.name }} wildlife, {{
+destination.name }} bird watching{% endblock %}
 
 {% block og_title %}{{ destination.name }} - Kashmir Travel Guide{% endblock %}
 {% block og_description %}{{ destination.description|truncatewords:25 }}{% endblock %}
-{% block og_image %}https://frozenkashmir.com{{ destination.image.url }}{% endblock %}
+{% block og_image %}https://frozenkashmir.com{% if destination.image %}{{ destination.image.url }}{% endif %}{% endblock %}
 
 {% block extra_structured_data %}
 {# TouristDestination Schema #}
@@ -20,7 +42,7 @@ in Kashmir{% endblock %}
   "@type": "TouristDestination",
   "name": "{{ destination.name }}",
   "description": "{{ destination.description|escapejs }}",
-  "image": "https://frozenkashmir.com{{ destination.image.url }}",
+  "image": "https://frozenkashmir.com{% if destination.image %}{{ destination.image.url }}{% endif %}",
   "url": "https://frozenkashmir.com{% url 'destination_detail' destination.slug %}",
   "touristType": ["Families", "Couples", "Adventure Seekers", "Nature Lovers"]
 }

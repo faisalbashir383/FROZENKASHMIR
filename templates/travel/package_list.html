@@ -1,47 +1,70 @@
 {% extends 'travel/base.html' %}
 
+{% block title %}Kashmir Tour Packages - All Inclusive Kashmir Holiday Deals | Frozen Kashmir{% endblock %}
+
+{% block meta_description %}Explore our complete collection of Kashmir tour packages. Choose from honeymoon packages,
+family tours, adventure trips, skiing holidays, and luxury tours. Best Kashmir packages with transparent pricing,
+flexible itineraries, and 24/7 support.{% endblock %}
+
+{% block meta_keywords %}Kashmir tour packages list, all Kashmir packages, Kashmir honeymoon deals, Kashmir family tour
+packages, Kashmir adventure packages, best Kashmir tour deals, Kashmir skiing packages, Gulmarg ski packages, Kashmir
+trekking packages, Kashmir winter packages 2025, Kashmir summer packages, Kashmir budget packages, Kashmir luxury tours,
+Kashmir premium packages, affordable Kashmir tours, cheap Kashmir packages, Kashmir group tour packages, Kashmir private
+tours, Kashmir customized packages, Kashmir weekend packages, Kashmir 3 day packages, Kashmir 4 day packages, Kashmir 5
+day packages, Kashmir 7 day packages, Kashmir 10 day tours, Kashmir short trips, Kashmir long vacations, Kashmir tour
+with flight, Kashmir tour with hotel, Kashmir all inclusive package, Kashmir package with meals, Kashmir package with
+transport, Kashmir Deluxe package, Kashmir standard package, Kashmir economy tour, Kashmir super deluxe tour, Kashmir
+VVIP package, Kashmir celebrity tour, Kashmir influencer packages, Kashmir photography packages, Kashmir solo traveler
+packages, Kashmir couple tour packages, Kashmir senior citizen tour, Kashmir student tour packages, Kashmir corporate
+tour, Kashmir conference packages, Kashmir team outing, Kashmir incentive tour, Kashmir wellness packages, Kashmir
+Ayurveda tour, Kashmir meditation retreat, Kashmir yoga packages, Kashmir spiritual tour, Kashmir Sufi tour, Kashmir
+heritage packages, Kashmir culture tour, Kashmir food tour package, Kashmir local experience, authentic Kashmir
+packages, offbeat Kashmir tour, hidden gems Kashmir, unexplored Kashmir tour, Kashmir special tour, Kashmir festival
+packages, Kashmir Tulip festival tour, Kashmir Shikara packages, Kashmir houseboat packages, Kashmir resort packages,
+Kashmir tent stay packages, Kashmir camping packages, Kashmir glamping tours{% endblock %}
+
 {% block content %}
 <section class="section">
     <!-- Recommendations Section -->
-<!--    {% if recommendations %}-->
-<!--    <div class="recommendations-section">-->
-<!--        <div class="recommendations-header">-->
-<!--            <span style="font-size: 2rem;">✨</span>-->
-<!--            <h3>Recommended for You</h3>-->
-<!--        </div>-->
-<!--        <div class="grid">-->
-<!--            {% for package in recommendations %}-->
-<!--            <div class="card">-->
-<!--                <div class="card-img-wrapper">-->
-<!--                    <span class="card-badge">Recommended</span>-->
-<!--                    {% if package.image %}-->
-<!--                    <img src="{{ package.image.url }}" alt="{{ package.title }}" class="card-img">-->
-<!--                    {% else %}-->
-<!--                    <div class="card-img"-->
-<!--                        style="background-color: #ddd; display: flex; align-items: center; justify-content: center;">No-->
-<!--                        Image</div>-->
-<!--                    {% endif %}-->
-<!--                </div>-->
-<!--                <div class="card-content">-->
-<!--                    <h3 class="card-title">{{ package.title }}</h3>-->
-<!--                    <div class="card-meta">-->
-<!--                        <span>⏱ {{ package.duration }}</span>-->
-<!--                        <span>📍 {{ package.destination.name }}</span>-->
-<!--                    </div>-->
-<!--                    <div class="price-row">-->
-<!--                        <div class="price">-->
-<!--                            ₹{{ package.price }}-->
-<!--                            <small>/ person</small>-->
-<!--                        </div>-->
-<!--                        <a href="{% url 'package_detail' package.slug %}" class="btn-outline"-->
-<!--                            style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">View Details</a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            {% endfor %}-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    {% endif %}-->
+    <!--    {% if recommendations %}-->
+    <!--    <div class="recommendations-section">-->
+    <!--        <div class="recommendations-header">-->
+    <!--            <span style="font-size: 2rem;">✨</span>-->
+    <!--            <h3>Recommended for You</h3>-->
+    <!--        </div>-->
+    <!--        <div class="grid">-->
+    <!--            {% for package in recommendations %}-->
+    <!--            <div class="card">-->
+    <!--                <div class="card-img-wrapper">-->
+    <!--                    <span class="card-badge">Recommended</span>-->
+    <!--                    {% if package.image %}-->
+    <!--                    <img src="{{ package.image.url }}" alt="{{ package.title }}" class="card-img">-->
+    <!--                    {% else %}-->
+    <!--                    <div class="card-img"-->
+    <!--                        style="background-color: #ddd; display: flex; align-items: center; justify-content: center;">No-->
+    <!--                        Image</div>-->
+    <!--                    {% endif %}-->
+    <!--                </div>-->
+    <!--                <div class="card-content">-->
+    <!--                    <h3 class="card-title">{{ package.title }}</h3>-->
+    <!--                    <div class="card-meta">-->
+    <!--                        <span>⏱ {{ package.duration }}</span>-->
+    <!--                        <span>📍 {{ package.destination.name }}</span>-->
+    <!--                    </div>-->
+    <!--                    <div class="price-row">-->
+    <!--                        <div class="price">-->
+    <!--                            ₹{{ package.price }}-->
+    <!--                            <small>/ person</small>-->
+    <!--                        </div>-->
+    <!--                        <a href="{% url 'package_detail' package.slug %}" class="btn-outline"-->
+    <!--                            style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">View Details</a>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            {% endfor %}-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    {% endif %}-->
 
     <h2 class="section-title">All Packages</h2>
 
@@ -78,8 +101,7 @@
                     <div class="filter-options">
                         {% for code, name in categories %}
                         <label class="checkbox-label">
-                            <input type="radio" name="category" value="{{ code }}" 
-                            {% if request.GET.category == code %}checked{% endif %}>
+                            <input type="radio" name="category" value="{{ code }}" {% if request.GET.category == code %}checked{% endif %}>
                             {{ name }}
                         </label>
                         {% endfor %}
@@ -91,8 +113,7 @@
                     <div class="filter-options">
                         {% for code, name in difficulties %}
                         <label class="checkbox-label">
-                            <input type="radio" name="difficulty" value="{{ code }}" 
-                            {% if request.GET.difficulty == code %}checked{% endif %}>
+                            <input type="radio" name="difficulty" value="{{ code }}" {% if request.GET.difficulty == code %}checked{% endif %}>
                             {{ name }}
                         </label>
                         {% endfor %}
@@ -103,23 +124,19 @@
                     <div class="filter-title">Activities</div>
                     <div class="filter-options">
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="skiing"
-                                   {% if 'skiing' in request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="skiing" {% if 'skiing' in request.GET.activities %}checked{% endif %}>
                             Skiing
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="trekking"
-                                   {% if 'trekking' in request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="trekking" {% if 'trekking' in request.GET.activities %}checked{% endif %}>
                             Trekking
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="houseboat"
-                                   {% if 'houseboat' in request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="houseboat" {% if 'houseboat' in request.GET.activities %}checked{% endif %}>
                             Houseboat Stay
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="sightseeing"
-                                   {% if 'sightseeing' in request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="sightseeing" {% if 'sightseeing' in request.GET.activities %}checked{% endif %}>
                             Sightseeing
                         </label>
                     </div>
