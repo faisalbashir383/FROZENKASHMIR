@@ -154,15 +154,15 @@ class BlogPost(models.Model):
     author = models.CharField(max_length=500, default='FrozenKashmir Team')
     category = models.ForeignKey(BlogCategory, on_delete=models.SET_NULL, null=True, related_name='posts')
     featured_image = models.URLField(help_text="URL to featured image from Unsplash")
-    excerpt = models.TextField(max_length=1000, help_text="Short summary for listings")
+    excerpt = models.TextField( help_text="Short summary for listings")
     content = models.TextField(help_text="Full blog post content")
-    tags = models.CharField(max_length=600, blank=True, help_text="Comma-separated tags")
+    tags = models.TextField(blank=True, help_text="Comma-separated tags")
     is_featured = models.BooleanField(default=False, help_text="Featured on homepage")
     view_count = models.PositiveIntegerField(default=0)
     
     # SEO fields
-    meta_description = models.CharField(max_length=600, blank=True)
-    meta_keywords = models.CharField(max_length=600, blank=True)
+    meta_description = models.TextField(blank=True)
+    meta_keywords = models.TextField(blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
