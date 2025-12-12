@@ -19,8 +19,17 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
+from django.views.generic import TemplateView
+from django.http import FileResponse
 from travel.sitemaps import PackageSitemap, DestinationSitemap, StaticViewSitemap, BlogPostSitemap
 from travel.seo_views import robots_txt
+import os
+
+
+def serve_sw_js(request):
+    """Serve the sw.js file for Monetag verification"""
+    sw_path = os.path.join(settings.BASE_DIR, 'sw.js')
+    return FileResponse(open(sw_path, 'rb'), content_type='application/javascript')
 
 
 # Sitemap configuration
@@ -33,6 +42,7 @@ sitemaps = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('sw.js', serve_sw_js, name='service_worker'),  # Monetag verification
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('robots.txt', robots_txt, name='robots_txt'),
     path('', include('travel.urls')),
