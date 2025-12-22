@@ -101,8 +101,7 @@ Kashmir tent stay packages, Kashmir camping packages, Kashmir glamping tours{% e
                     <div class="filter-options">
                         {% for code, name in categories %}
                         <label class="checkbox-label">
-                            <input type="radio" name="category" value="{{ code }}" {% if request.GET.category==code
-                                %}checked{% endif %}>
+                            <input type="radio" name="category" value="{{ code }}" {% if request.GET.category == code %}checked{% endif %}>
                             {{ name }}
                         </label>
                         {% endfor %}
@@ -114,8 +113,7 @@ Kashmir tent stay packages, Kashmir camping packages, Kashmir glamping tours{% e
                     <div class="filter-options">
                         {% for code, name in difficulties %}
                         <label class="checkbox-label">
-                            <input type="radio" name="difficulty" value="{{ code }}" {% if request.GET.difficulty==code
-                                %}checked{% endif %}>
+                            <input type="radio" name="difficulty" value="{{ code }}" {% if request.GET.difficulty == code %}checked{% endif %}>
                             {{ name }}
                         </label>
                         {% endfor %}
@@ -126,23 +124,19 @@ Kashmir tent stay packages, Kashmir camping packages, Kashmir glamping tours{% e
                     <div class="filter-title">Activities</div>
                     <div class="filter-options">
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="skiing" {% if 'skiing' in
-                                request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="skiing" {% if 'skiing' in request.GET.activities %}checked{% endif %}>
                             Skiing
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="trekking" {% if 'trekking' in
-                                request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="trekking" {% if 'trekking' in request.GET.activities %}checked{% endif %}>
                             Trekking
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="houseboat" {% if 'houseboat' in
-                                request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="houseboat" {% if 'houseboat' in request.GET.activities %}checked{% endif %}>
                             Houseboat Stay
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="activities" value="sightseeing" {% if 'sightseeing' in
-                                request.GET.activities %}checked{% endif %}>
+                            <input type="checkbox" name="activities" value="sightseeing" {% if 'sightseeing' in request.GET.activities %}checked{% endif %}>
                             Sightseeing
                         </label>
                     </div>
@@ -161,14 +155,14 @@ Kashmir tent stay packages, Kashmir camping packages, Kashmir glamping tours{% e
                     <strong>{{ packages.count }}</strong> packages found
                 </div>
                 <select class="sort-select" onchange="updateSort(this.value)">
-                    <option value="popularity" {% if request.GET.sort=='popularity' %}selected{% endif %}>Most Popular
+                    <option value="popularity" {% if request.GET.sort == 'popularity' %}selected{% endif %}>Most Popular
                     </option>
-                    <option value="price_low" {% if request.GET.sort=='price_low' %}selected{% endif %}>Price: Low to
+                    <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price: Low to
                         High</option>
-                    <option value="price_high" {% if request.GET.sort=='price_high' %}selected{% endif %}>Price: High to
+                    <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price: High to
                         Low</option>
-                    <option value="duration" {% if request.GET.sort=='duration' %}selected{% endif %}>Duration</option>
-                    <option value="rating" {% if request.GET.sort=='rating' %}selected{% endif %}>Top Rated</option>
+                    <option value="duration" {% if request.GET.sort == 'duration' %}selected{% endif %}>Duration</option>
+                    <option value="rating" {% if request.GET.sort == 'rating' %}selected{% endif %}>Top Rated</option>
                 </select>
             </div>
 
